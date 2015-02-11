@@ -123,7 +123,9 @@ After profiling this code i've found out that the binary search takes a relative
 simple: get the 2048 lowest-ranked points and run the linear scan algorithm. If we have not found 20 points yet, run the mipmap algorithm. These 2 algorithms complement each other nicely, linear scan is a best-case if the rectangle is large, mipmap is a best-case when the rectangle is small.
 
 The ugly case is when this happens:
-![diagram that explains the worst-case](doc/pro_paint_skills.png)
+
+![diagram](doc/pro_paint_skillz.png)
+
 Assuming 10GB/s memory bandwidth and 10m points, the worst-case running time of this algorithm is 2ms. 
 
 Plotting the time the algorithm took for a given rectangle relative to the total amount of points in the rectangle leads to interesting plots:
