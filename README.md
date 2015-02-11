@@ -14,9 +14,9 @@ My program runs 2 different algorithms, first i will describe how each algorithm
 # Linear scan
 
 The linear scan algorithm is extremely simple:
-	- sort all points by their rank.
-	- do a linear scan through the points, checking if it is inside a given rect.
-	- when we've found 20 points, return.
+ - sort all points by their rank.
+ - do a linear scan through the points, checking if it is inside a given rect.
+ - when we've found 20 points, return.
 
 This could be implemented as simple as:
 
@@ -77,9 +77,7 @@ As an possible optimization, swap out _mm256_extract_epi32 with _mm256_movemask_
 
 # mipmaps
 
-Mipmap is technique from computer graphics in which the same texture is stored multiple times in different resolutions:
-http://img.tomshardware.com/us/2004/06/03/ati/pic03.jpg
-(image source: http://www.tomshardware.com/reviews/ati,819-2.html)
+An mipmap is an termtechnique often used in computer graphics in which the same texture is stored multiple times in different resolutions.
 
 I shall refer to 'mipmap 0' or 'lowest level mipmap' as the smallest mipmap, and 'top level mipmap' as the largest mipmap. Our lowest leven mipmap contains around 3000 points, with each subsequent level containing 3 times as many points. These numbers where chosen after much experimentation.
 
@@ -123,11 +121,11 @@ After profiling this code i've found out that the binary search takes a relative
 simple: get the 2048 lowest-ranked points and run the linear scan algorithm. If we have not found 20 points yet, run the mipmap algorithm. These 2 algorithms complement each other nicely, linear scan is a best-case if the rectangle is large, mipmap is a best-case when the rectangle is small.
 
 The ugly case is when this happens:
-![diagram that explains the worst-case](pro_paint_skills.png)
+![diagram that explains the worst-case](doc/pro_paint_skills.png)
 Assuming 10GB/s memory bandwidth and 10m points, the worst-case running time of this algorithm is 2ms. 
 
 Plotting the time the algorithm took for a given rectangle relative to the total amount of points in the rectangle leads to interesting plots:
-![plot](plot.png)
+![plot](doc/plot.png)
 the long area on the left side is the linear scan algorithm. This area contains around 65% of the inputs. Towards the left we see 7 different blobs, corresponding the 7 mipmap layers. 
 
 # What didn't work
@@ -152,16 +150,16 @@ I've found gcc 4.9.1 to be around 2% faster than MSVC 2014 and around 6% faster 
 | solution.h cpp | the actual algorithm |
 
 
-= license =
+# license
 This project is licenced under an MIT license.
 
 
-    Copyright (c) 2015 Stefan Dessens
+Copyright (c) 2015 Stefan Dessens
 
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
