@@ -3,7 +3,7 @@
 My submission for Churchill Navigation's programming challange: http://churchillnavigation.com/challenge/. I got the first place quite early in the challange and held it quite long. Final results are still unknown.
 
 The problem description is:
- - You are given an array with 10.000.000 points (float x, float y, int32_t rank, int8_t id).
+ - You are given an array with 10.000.000 points (`float` x, `float` y, `int32_t` rank, `int8_t` id).
  - You are given a rectangle, return the 20 points inside that rectangle with the lowest rank.
  - do this as fast as possible while keeping the memory requirements below 512MB. Only the query time is counted
 
@@ -71,9 +71,9 @@ size_t linear_scan(Rect rect, Point* points, float *y_points, float *x_points, s
 }
 ```
 
-For the uninitiated, __m256 is an data type that contains 8 floats in a single register, usually called XMM (128 bits), YMM (256 bits) or vector register. We can use a single branch to compare 8 points for validity with respect to the rectangle. Note that the above code only works if both y_points and x_points are aligned to an 32-byte boundary and n_points is an multiple of 8. _mm256_load_ps crashes on unaligned loads. (which is likely what you want, we don't want unaligned loads in speed-critical code).
+For the uninitiated, `__m256` is an data type that contains 8 floats in a single register, usually called `XMM` (128 bits, SSE), `YMM` (256 bits, AVX) or vector register. We can use a single branch to compare 8 points for validity with respect to the rectangle. Note that the above code only works if both y_points and x_points are aligned to an 32-byte boundary and n_points is an multiple of 8. `_mm256_load_ps` crashes on unaligned loads. (which is likely what you want, we don't want unaligned loads in speed-critical code).
 
-As an possible optimization, swap out _mm256_extract_epi32 with _mm256_movemask_epi8. This requires an AVX2 instruction set, which my computer does not support. _mm256_extract_epi32 is no real intrinsic, but may compile to 2 separate instructions.
+As an possible optimization, swap out `_mm256_extract_epi32` with `_mm256_movemask_epi8`. This requires an `AVX2` instruction set, which my computer does not support. `_mm256_extract_epi32` is no real intrinsic, but may compile to 2 separate instructions.
 
 # Mipmaps
 
@@ -111,9 +111,9 @@ struct y_mipmap {
 }
 ```
 
-When we are testing for points inside the rectangle, we do an binary search in both x_mipmap and y_mipmap to find the amount of points with valid X (in case of x_mipmap) or Y coordinate (in case of y_mipmap). Then we select either the X or Y mipmap to scan though. If we selected the X mipmap, we only have to compare the Y coordinate of the point (which can be done extremely efficiently with SSE, less than 1 clock cycle per point). The inverse holds true for Y mipmap. The indices of points that fall into the rectangle are inserted into an max heap. At a low level, this algorithm boils down to a binary search in an sorted array followed by a linear scan, this is extremely cache-friendly.
+When we are testing for points inside the rectangle, we do an binary search in both `x_mipmap` and `y_mipmap` to find the amount of points with valid X (in case of `x_mipmap`) or Y coordinate (in case of `y_mipmap`). Then we select either the X or Y mipmap to scan though. If we selected the `x_mipmap`, we only have to compare the Y coordinate of the point (which can be done extremely efficiently with SSE). The inverse holds true for `y_mipmap`. The indices of points that fall into the rectangle are inserted into an max heap. At a low level, this algorithm boils down to a binary search in an sorted array followed by a linear scan, this is extremely cache-friendly.
 
-My max heap is an simple implementation that uses std::push_heap and std::pop_heap. 
+My max heap is an simple implementation that uses `std::push_heap` and `std::pop_heap`. 
 
 After profiling this code i've found out that the binary search takes a relatively high chuck of the execution time. Can we reduce the amount of binary searches we have to do somehow? It turns out we can with fractional cascading trees, but this would not fit in our memory requirements. I've ended up creating an mapping table that maps each mimap level n to n+1. With this mapping table we can calculate the approximate position in mipmap level n+1, we don't have to do an binary search over all data, but only over an small range of data.
 
@@ -133,7 +133,7 @@ the long area on the left side is the linear scan algorithm. This area contains 
 
 K-D trees. The cache misses completely destroy it. Actually i wanted to implement an cone tracing-like data structure, but i settled on K-D trees instead. Cone tracing is an algorithm used in 3D games for ambient occlusion and uses an data structure that resembes an quad tree.
 
-In order to utilize cache lines as efficient as possible, my K-D tree stored few poings in each node. This was faster than an normal K-D tree but always slower than the combined linear scan + mipmap algorithm. If the rectangle is small, you're likely to search deep and K-D tree will perform poorly in comparsion to mipmaps. If the rectangle is large, the linear scan will be orders of magnitude faster. My K-D tree was by no means optimal, and could've been improved a lot.
+In order to utilize cache lines as efficient as possible, my K-D tree stored few points in each node. This was faster than an normal K-D tree but always slower than the combined linear scan + mipmap algorithm. If the rectangle is small, you're likely to search deep and K-D tree will perform poorly in comparsion to mipmaps. If the rectangle is large, the linear scan will be orders of magnitude faster. My K-D tree was by no means optimal, and could've been improved a lot.
 
 Threading is another thing that did not work. Some of the later mipmap levels take between 10-60µs to process. I did a quick test and the overhead to submit job to another thread and retrieve it's result is around 0.5µs. This means that above a work size of 1µs it should be faster to use worker threads. After i've implemented this it turned out the speedup was neglectable, i require more time to figure out why there is such an large difference between my testcase and the actual implementation. The code is nearly identical.
 
