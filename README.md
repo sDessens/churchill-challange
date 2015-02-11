@@ -28,6 +28,7 @@ size_t linear_search(Rect rect, Point *points, size_t n_points, Point *out, size
 		if (is_inside(rect, points[i])) {
 			out[n++] = points[i];
 			if (n == n_points)
+				break;
 		}
 	}
 	return n;
