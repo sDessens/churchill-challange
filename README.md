@@ -132,7 +132,7 @@ the long area on the left side is the linear scan algorithm. This area contains 
 
 # What didn't work
 
-K-D trees. The cache misses completely destroy it. Actually i wanted to implement an cone tracing-like data structure, but i settled on K-D trees instead. Cone tracing is an algorithm used in 3D games for ambient occlusion and uses an data structure that resembes an quad tree.
+K-D trees. The cache misses completely destroy it. Actually i wanted to implement an cone tracing-like data structure, but i settled on K-D trees instead. Cone tracing is an algorithm used in 3D games for ambient occlusion and uses an data structure that resembes a quad tree.
 
 In order to utilize cache lines as efficient as possible, my K-D tree stored few points in each node. This was faster than an normal K-D tree but always slower than the combined linear scan + mipmap algorithm. If the rectangle is small, you're likely to search deep and K-D tree will perform poorly in comparsion to mipmaps. If the rectangle is large, the linear scan will be orders of magnitude faster. My K-D tree was by no means optimal, and could've been improved a lot.
 
