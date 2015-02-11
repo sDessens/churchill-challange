@@ -112,7 +112,7 @@ struct y_mipmap {
 }
 ```
 
-When we are testing for points inside the rectangle, we do an binary search in both `x_mipmap` and `y_mipmap` to find the amount of points with valid X (in case of `x_mipmap`) or Y coordinate (in case of `y_mipmap`). Then we select either the X or Y mipmap to scan though. If we selected the `x_mipmap`, we only have to compare the Y coordinate of the point (which can be done extremely efficiently with SSE). The inverse holds true for `y_mipmap`. The indices of points that fall into the rectangle are inserted into an max heap. At a low level, this algorithm boils down to a binary search in an sorted array followed by a linear scan, this is extremely cache-friendly.
+When we are testing for points inside the rectangle, we do an binary search in both `x_mipmap` and `y_mipmap` to find the amount of points with valid X (in case of `x_mipmap`) or Y coordinate (in case of `y_mipmap`). Then we select either the X or Y mipmap to scan though. If we selected the `x_mipmap`, we only have to compare the Y coordinate of the points (which can be done extremely efficiently with SSE). The inverse holds true for `y_mipmap`. The indices of points that fall into the rectangle are inserted into an max heap. At a low level, this algorithm boils down to a binary search in an sorted array followed by a linear scan, this is extremely cache-friendly.
 
 My max heap is an simple implementation that uses `std::push_heap` and `std::pop_heap`. 
 
