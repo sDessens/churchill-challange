@@ -150,9 +150,9 @@ I've found gcc 4.9.1 to be around 2% faster than MSVC 2014 and around 6% faster 
 
 | which | what |
 | ----- | ----- |
-| binary_search | data structure that holds an single mipmap level |
+| binary_search.h | data structure that holds an single mipmap level |
 | rank_heap.h | max-heap implementation |
-| solution.h cpp | the actual algorithm |
+| solution.h/cpp | the actual algorithm |
 
 # License
 
