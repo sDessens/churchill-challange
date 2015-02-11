@@ -1,4 +1,4 @@
-# Whats this?
+# What's this?
 
 My submission for Churchill Navigation's programming challange: http://churchillnavigation.com/challenge/. I got the first place quite early in the challange and held it quite long. Final results are still unknown.
 
