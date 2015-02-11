@@ -94,7 +94,7 @@ I shall refer to 'mipmap 0' or 'lowest level mipmap' as the smallest mipmap, and
 | 7 | 6670350 (actually 6668302) | 152.62 MiB |
 
 Mipmap level 0 stores the 3050 points with the lowest rank. Mipmap level 1 contains the 9150 points with the lowest rank which where not already included in level 0, and so on.
-We store each mipmap level twice, once sorted by the X dimension, once sorted by the Y dimension. We use the same AOS technique as before.
+We store each mipmap level twice, once sorted by the X dimension, once sorted by the Y dimension. We use the same SOA technique as before.
 
 ```c++
 struct x_mipmap {
