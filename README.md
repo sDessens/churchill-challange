@@ -1,6 +1,6 @@
 # What's this?
 
-My submission for Churchill Navigation's programming challange: http://churchillnavigation.com/challenge/. I got the first place quite early in the challange and held it quite long. Final results are still unknown.
+My submission for Churchill Navigation's programming challange: http://churchillnavigation.com/challenge/. I got the first place around 1 month before the end of the contest, and held it to about an hour before the deadline. My final result was #3.
 
 The problem description is:
  - You are given an array with 10.000.000 points (`float` x, `float` y, `int32_t` rank, `int8_t` id).
@@ -9,7 +9,7 @@ The problem description is:
 
 # My solution
 
-My program runs 2 different algorithms, first i will describe how each algorithm works, then i will describe how i have linked them together. I shall refer to these algorithms as 'linear scan' and 'mipmap'
+My program runs 2 different algorithms, first i will describe how each algorithm works, then i will describe how i have linked them together. I shall refer to these algorithms as 'linear scan' and 'mipmap'.
 
 # Linear scan
 
